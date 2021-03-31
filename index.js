@@ -33,13 +33,13 @@ const server = new ApolloServer({
 })
 
 //Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static("../build"));
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static("../build"));
 
-    app.use("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../build/index.html"));
-    })
-}
+//     app.use("*", (req, res) => {
+//         res.sendFile(path.resolve(__dirname, "../build/index.html"));
+//     })
+// }
 
 server.applyMiddleware({app});
 
