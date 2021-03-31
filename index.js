@@ -1,7 +1,6 @@
 const { ApolloServer }  = require("apollo-server-express");
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
 
 const { MONGODB, PORT } = require("./config");
 const typeDefs = require("./graphql/typeDefs");
@@ -31,15 +30,6 @@ const server = new ApolloServer({
     typeDefs,
     resolvers
 })
-
-//Serve static assets if in production
-// if (process.env.NODE_ENV === 'production') {
-//     app.use(express.static("../build"));
-
-//     app.use("*", (req, res) => {
-//         res.sendFile(path.resolve(__dirname, "../build/index.html"));
-//     })
-// }
 
 server.applyMiddleware({app});
 
