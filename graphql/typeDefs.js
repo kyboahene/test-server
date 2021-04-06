@@ -37,6 +37,7 @@ module.exports = gql`
         status: String! 
         driver_license: [Driver_Info]
         createdAt: String!
+        user: String!
     } 
 
     type Driver_Info{
@@ -54,6 +55,7 @@ module.exports = gql`
     }
 
     input prospectDetails{
+        username: String!,
         fname: String!,
         Lname: String!,
         email: String!,
