@@ -1,5 +1,6 @@
 const { UserInputError } = require("apollo-server-errors");
 const Prospect = require("../../models/Prospect");
+const User = require("../../models/User");
 const { validProspectInput, validDLicenseInput } = require("../../util/validate");
 
 module.exports = {
@@ -32,7 +33,7 @@ module.exports = {
     Mutation: {
         //add a prospect
         async addProspect(_, {prospectDetails}){
-            const { fname, Lname, email, phone} = prospectDetails;
+            const { username, fname, Lname, email, phone} = prospectDetails;
 
             //validate prospect's inputs
             const { valid, errors } = validProspectInput(fname, Lname, email, phone);
@@ -50,18 +51,25 @@ module.exports = {
                 })
             }
 
-            //create new prospect
-            const newProspect = new Prospect({
-                fname,
-                Lname,
-                email,
-                phone,
-            });
-            const res = await newProspect.save();
+            const user = await User.findOne({ username });
 
-            return{
-                ...res._doc,
-                id: res.id
+            if(user){
+                //create new prospect
+                const newP = new Prospect({
+                    fname: fname,
+                    Lname: Lname,
+                    email: email,
+                    phone: phone,
+                    user: user._id
+                });
+
+                const res = await newP.save();
+                return{
+                    ...res._doc,
+                    id: res.id
+                }
+            }else {
+                throw new Error("Prospect was not created!!!");
             }
         },
 
