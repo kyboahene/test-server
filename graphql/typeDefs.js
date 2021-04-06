@@ -3,8 +3,8 @@ const  { gql } = require("apollo-server-express");
 module.exports = gql`
     type Query{
         getUsers: [User]
-        getProspect(prospectID: ID!): Prospect
-        getProspects: [Prospect]
+        getProspectsPerUsername(username: String!): [Prospect]
+        getAllProspects: [Prospect]
     }
 
     type Mutation{

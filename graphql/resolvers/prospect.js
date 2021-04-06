@@ -6,7 +6,7 @@ const { validProspectInput, validDLicenseInput } = require("../../util/validate"
 module.exports = {
     Query: {
         //Get all prospects
-        async getProspects(){
+        async getAllProspects(){
             try{
                 const prospects = await Prospect.find().sort({ createdAt: -1});
                 return prospects;
@@ -16,13 +16,18 @@ module.exports = {
         },
 
         //Get a prospect
-        async getProspect(_, { prospectId }){
+        async getProspectsPerUsername(_, { username }){
             try{
-                const prospect = await Prospect.findById(prospectId);
-                if(prospect){
-                    return prospect;
+                const user = await User.findOne({ username });
+                if(user){
+                    const prospects = await Prospect.find({ user: user._id });
+                    if (prospects) {
+                        return prospects;
+                    } else {
+                        throw new Error("Prospects not found");
+                    }
                 } else {
-                    throw new Error("Prospect not found");
+                    throw new Error(`${user.username} does not exists`);
                 }
             } catch(err){
                 throw new Error(err);
