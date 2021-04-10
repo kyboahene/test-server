@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   type Query {
-    getUsers: [User]
+    getUser(username: String!): Details!
     getProspectsPerUsername(username: String!): [Prospect]
     getAllProspects: [Prospect]
   }
@@ -33,6 +33,12 @@ module.exports = gql`
 
   type Link {
     link: String!
+  }
+
+  type Details {
+    id: ID!
+    username: String!
+    email: String!
   }
 
   type User {

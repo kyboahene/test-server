@@ -19,6 +19,29 @@ const generateToken = (user) => {
 }
 
 module.exports = {
+  Query: {
+    //get user
+    async getUser(_, { username }) {
+      const errors = {}
+      if (username.trim() == '') {
+        throw new UserInputError('Errors', {
+          errors: {
+            username: 'Please provide a username',
+          },
+        })
+      }
+
+      try {
+        const user = await User.findOne({ username })
+        if (user) {
+          console.log(username)
+          return user
+        }
+      } catch (error) {
+        throw new Error(err)
+      }
+    },
+  },
   Mutation: {
     //Regsiter User
     async register(
@@ -108,24 +131,23 @@ module.exports = {
       _,
       { userID, username, email, password, confirmPassword },
     ) {
-      const { valid, errors } = validRegisterInput(
-        username,
-        email,
-        password,
-        confirmPassword,
-      )
-      if (!valid) {
-        throw new UserInputError('Errors', { errors })
-      }
-
+      const errors = {}
       //hash password and create a token
-      password = await bcrypt.hash(password, 12)
-
+      if (password) {
+        if (password === confirmPassword) {
+          password = await bcrypt.hash(password, 12)
+        } else {
+          throw new UserInputError('Errors', {
+            errors: {
+              password: 'Password does not match',
+            },
+          })
+        }
+      }
       try {
         const res = await User.findOneAndUpdate(
           { _id: userID },
           { username: username, email: email, password: password },
-          { new: true },
         )
 
         return res
