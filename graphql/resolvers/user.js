@@ -48,6 +48,15 @@ module.exports = {
         })
       }
 
+      const user1 = await User.findOne({ email })
+      if (user1) {
+        throw new UserInputError('Username is taken', {
+          errors: {
+            general: 'User already exists',
+          },
+        })
+      }
+
       //hash password and create a token
       password = await bcrypt.hash(password, 12)
 
