@@ -16,7 +16,7 @@ module.exports = gql`
       email: String
       password: String
       confirmPassword: String
-    ): User!
+    ): Details!
     sendForgotPasswordEmail(email: String!): Link!
     forgotPasswordChange(newPassword: String!, key: String!): User!
 

@@ -5,6 +5,7 @@ const { UserInputError } = require('apollo-server-errors')
 const User = require('../../models/User')
 const { SECRET_KEY } = require('../../config')
 const { validRegisterInput, validLoginInput } = require('../../util/validate')
+const { ObjectId } = require('bson')
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -132,22 +133,47 @@ module.exports = {
       { userID, username, email, password, confirmPassword },
     ) {
       const errors = {}
-      //hash password and create a token
-      if (password) {
-        if (password === confirmPassword) {
-          password = await bcrypt.hash(password, 12)
+
+      const user = await User.findById(ObjectId(userID))
+      const details = []
+
+      if (user) {
+        console.log(user)
+        if (username) {
+          details.push(username)
         } else {
-          throw new UserInputError('Errors', {
-            errors: {
-              password: 'Password does not match',
-            },
-          })
+          details.push(user.username)
+        }
+
+        //hash password and create a token
+        if (password) {
+          if (password === confirmPassword) {
+            password = await bcrypt.hash(password, 12)
+
+            details.push(password)
+          } else {
+            throw new UserInputError('Errors', {
+              errors: {
+                password: 'Password does not match',
+              },
+            })
+          }
+        } else {
+          details.push(user.password)
+        }
+
+        if (email) {
+          details.push(email)
+        } else {
+          details.push(user.email)
         }
       }
+
       try {
         const res = await User.findOneAndUpdate(
           { _id: userID },
-          { username: username, email: email, password: password },
+          { username: details[0], email: details[2], password: details[1] },
+          { new: true },
         )
 
         return res
