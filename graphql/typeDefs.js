@@ -5,6 +5,7 @@ module.exports = gql`
     getUser(username: String!): Details!
     getProspectsPerUsername(username: String!): [Prospect]
     getAllProspects: [Prospect]
+    getProspect(ProspectId: String!): Prospect!
   }
 
   type Mutation {

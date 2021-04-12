@@ -36,6 +36,28 @@ module.exports = {
         throw new Error(err)
       }
     },
+
+    async getProspect(_, { ProspectId }) {
+      const errors = {}
+
+      if (ProspectId.trim() == '') {
+        throw new UserInputError('Errors', {
+          errors: {
+            ProspectId: 'Id was not given',
+          },
+        })
+      }
+
+      const prospect = Prospect.findById(ObjectId(ProspectId))
+
+      try {
+        if (prospect) {
+          return prospect
+        }
+      } catch (error) {
+        throw new Error('Prospect not found')
+      }
+    },
   },
 
   Mutation: {
@@ -126,6 +148,7 @@ module.exports = {
 
     //add Provider
     async addProvider(_, { ProspectId, Provider }) {
+      const errors = {}
       if (Provider.trim() == '') {
         throw new UserInputError('Errors', {
           errors: {
