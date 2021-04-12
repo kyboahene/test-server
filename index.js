@@ -17,7 +17,7 @@ const startServer = async () => {
     })
     .then(() => {
       console.log('Mongodb connected')
-      app.listen(PROCESS.ENV.PORT, () => {
+      app.listen(process.env.PORT, () => {
         console.log(`Server is connected${server.graphqlPath}`)
       })
     })
