@@ -99,10 +99,6 @@ module.exports.validDLicenseInput = (DofBirth, Number, State) => {
 
   console.log(DofBirth, Number, State)
 
-  if (DofBirth.trim() !== '') {
-    errors.DofBirth = 'Date is required'
-  }
-
   if (Number.trim() == '') {
     errors.Number = 'Number is required'
   }
