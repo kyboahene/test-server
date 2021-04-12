@@ -1,4 +1,5 @@
 const { UserInputError } = require('apollo-server-errors')
+const { ObjectId } = require('bson')
 const Prospect = require('../../models/Prospect')
 const User = require('../../models/User')
 const {
