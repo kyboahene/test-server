@@ -16,7 +16,7 @@ const startServer = async () => {
         useCreateIndex: true,
     }).then(() => {
         console.log("Mongodb connected");
-        app.listen( process.env.PORT || PORT, () => {
+        app.listen(PORT, () => {
             console.log(`Server is connected${server.graphqlPath}`);
         })
     }).catch((err) => {

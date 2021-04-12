@@ -59,9 +59,11 @@ module.exports = gql`
     provider: String
     status: String!
     driver_license: [Driver_Info]
-    createdAt: String!
+    createdAt: Date!
     user: String!
   }
+
+  scalar Date
 
   type Driver_Info {
     DofBirth: String!
