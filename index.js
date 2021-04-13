@@ -1,10 +1,12 @@
 const { ApolloServer } = require('apollo-server-express')
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const { MONGODB, PORT } = require('./config')
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
+const cookieParser = require('cookie-parser')
 
 mongoose.set('useFindAndModify', false)
 
@@ -27,6 +29,9 @@ const startServer = async () => {
 }
 
 const app = express()
+
+app.use(cookieParser())
+app.use(cors())
 
 const server = new ApolloServer({
   typeDefs,
